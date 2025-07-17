@@ -48,20 +48,34 @@ check_os() {
 
 # Check if Python is installed
 check_python() {
-    if ! command -v python3 &> /dev/null; then
+    # First try to use Python 3.12 if available
+    if command -v python3.12 &> /dev/null; then
+        PYTHON_CMD="python3.12"
+        print_status "Using Python 3.12 (optimal version)"
+    elif command -v python3 &> /dev/null; then
+        PYTHON_CMD="python3"
+        print_status "Using default Python 3"
+    else
         print_error "Python 3 is not installed"
-        print_error "Please install Python 3.8 or higher"
+        print_error "Please install Python 3.12 or higher"
         exit 1
     fi
 
-    PYTHON_VERSION=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+    PYTHON_VERSION=$($PYTHON_CMD -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
     print_status "Found Python $PYTHON_VERSION"
 
-    # Check if version is 3.8 or higher
-    if ! python3 -c "import sys; exit(0 if sys.version_info >= (3, 8) else 1)"; then
-        print_error "Python 3.8 or higher is required"
+    # Check if version is 3.12 or higher (now required), but allow 3.8+ for compatibility
+    if ! $PYTHON_CMD -c "import sys; exit(0 if sys.version_info >= (3, 8) else 1)"; then
+        print_error "Python 3.8 or higher is required for compatibility"
         print_error "Current version: $PYTHON_VERSION"
         exit 1
+    fi
+    
+    # Warn if not using Python 3.12+
+    if ! $PYTHON_CMD -c "import sys; exit(0 if sys.version_info >= (3, 12) else 1)"; then
+        print_warning "Python 3.12+ is now the target version for this project"
+        print_warning "Current version: $PYTHON_VERSION"
+        print_warning "For best performance, please upgrade to Python 3.12+"
     fi
 }
 
@@ -113,7 +127,7 @@ create_venv() {
         fi
     fi
 
-    python3 -m venv .venv
+    $PYTHON_CMD -m venv .venv
     print_status "Virtual environment created"
 }
 

@@ -17,7 +17,7 @@ repos:
     rev: 22.3.0
     hooks:
       - id: black
-        language_version: python3.8
+        language_version: python3.12
         args: ["--line-length=88"]
 
   - repo: https://github.com/pycqa/isort
@@ -114,7 +114,7 @@ repos:
 
 # Configure pre-commit settings
 default_language_version:
-  python: python3.8
+  python: python3.12
 
 minimum_pre_commit_version: 2.20.0
 
@@ -135,5 +135,5 @@ exclude: |
 # Fail fast on first error
 fail_fast: true
 
-# Repository settings
-default_stages: [commit]
+# Repository settings  
+default_stages: [pre-commit]

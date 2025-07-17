@@ -3,7 +3,8 @@
 # No external runtime dependencies required for basic functionality
 
 # Production dependencies: NONE
-# The application runs with Python 3.8+ standard library only
+# The application runs with Python 3.12+ standard library only
+# (Python 3.8+ supported for compatibility during transition)
 
 # For development dependencies, see requirements-dev.txt
 # For installation with all features: pip install -r requirements-dev.txt

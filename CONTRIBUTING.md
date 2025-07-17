@@ -20,7 +20,7 @@ Thank you for your interest in contributing to the MAC Address Changer project! 
 
 ### Prerequisites
 
-- Python 3.6 or higher
+- Python 3.12+ (3.8+ supported for compatibility)
 - `ifconfig` command (pre-installed on most Linux/macOS systems)
 - Git for version control
 - A Unix-like operating system (Linux or macOS)
@@ -28,23 +28,27 @@ Thank you for your interest in contributing to the MAC Address Changer project! 
 ### Development Setup
 
 1. **Fork and Clone the Repository**
+
    ```bash
    git clone https://github.com/yourusername/mac_changer.git
    cd mac_changer
    ```
 
 2. **Create a Virtual Environment**
+
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
 3. **Install Development Dependencies** (optional)
+
    ```bash
    pip install -r requirements-dev.txt
    ```
 
 4. **Run Tests to Verify Setup**
+
    ```bash
    python3 -m unittest test_mac_changer.py -v
    python3 scripts/test_systems.py --system-info-only
@@ -65,16 +69,19 @@ Thank you for your interest in contributing to the MAC Address Changer project! 
 We recommend using the following tools:
 
 - **Black** for code formatting:
+
   ```bash
   black mac_changer.py mac_changer_improved.py
   ```
 
 - **flake8** for linting:
+
   ```bash
   flake8 mac_changer.py mac_changer_improved.py
   ```
 
 - **mypy** for type checking:
+
   ```bash
   mypy mac_changer_improved.py
   ```
@@ -87,6 +94,7 @@ We recommend using the following tools:
 - Update README.md for significant changes
 
 Example docstring format:
+
 ```python
 def validate_mac_address(self, mac_addr: str) -> str:
     """Validate MAC address format.
@@ -111,17 +119,20 @@ def validate_mac_address(self, mac_addr: str) -> str:
 ### Running Tests
 
 Run all tests:
+
 ```bash
 python3 -m unittest discover -v
 ```
 
 Run specific test files:
+
 ```bash
 python3 -m unittest test.py -v
 python3 -m unittest test_improved.py -v
 ```
 
 Run with coverage (if pytest-cov is installed):
+
 ```bash
 pytest --cov=mac_changer --cov-report=html
 ```
@@ -137,11 +148,13 @@ pytest --cov=mac_changer --cov-report=html
 - Use the provided test infrastructure (test_mac_changer.py)
 
 Test naming convention:
+
 - `test_function_name_success` for successful cases
 - `test_function_name_failure` for error cases
 - `test_function_name_edge_case` for edge cases
 
 **Quality Standards**:
+
 - All tests must pass: `python3 -m unittest test_mac_changer.py -v`
 - Security scan clean: `python3 scripts/security_audit.py`
 - System compatibility: `python3 scripts/test_systems.py`
@@ -160,6 +173,7 @@ Test naming convention:
 ### Pull Request Process
 
 1. **Create a Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
@@ -170,6 +184,7 @@ Test naming convention:
    - Update documentation if necessary
 
 3. **Test Your Changes**
+
    ```bash
    python3 -m unittest test_mac_changer.py -v
    python3 scripts/test_systems.py
@@ -178,12 +193,14 @@ Test naming convention:
    ```
 
 4. **Commit Your Changes**
+
    ```bash
    git add .
    git commit -m "feat: add new validation feature"
    ```
 
 5. **Push to Your Fork**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -208,6 +225,7 @@ Use conventional commit format:
 - `chore:` for maintenance tasks
 
 Examples:
+
 ```
 feat: add support for random MAC generation
 fix: handle interface not found error gracefully
@@ -251,7 +269,7 @@ When requesting features:
 For security-related issues:
 
 - **DO NOT** create public issues
-- Email security concerns to: thomas@dyhr.com
+- Email security concerns to: <thomas@dyhr.com>
 - Include detailed description and potential impact
 - Allow time for assessment and fix before disclosure
 
@@ -323,6 +341,7 @@ mac_changer/
 ### Version Numbering
 
 Follow [Semantic Versioning](https://semver.org/):
+
 - **MAJOR**: Incompatible API changes
 - **MINOR**: New functionality (backward compatible)
 - **PATCH**: Bug fixes (backward compatible)
@@ -358,6 +377,7 @@ See [TODO.md](TODO.md) for the complete prioritized list of development tasks, i
 5. **Coordinate with maintainers** before starting major work
 
 **Before Contributing**:
+
 - Run `python3 scripts/test_systems.py` to verify system compatibility
 - Review `BACKUP_PROCEDURES.md` if working on backup/restore features
 - Check security implications with `python3 scripts/security_audit.py`
@@ -374,9 +394,10 @@ See [TODO.md](TODO.md) for the complete prioritized list of development tasks, i
 - **Backup Procedures**: BACKUP_PROCEDURES.md
 - **Issues**: GitHub Issues page
 - **Discussions**: GitHub Discussions (if enabled)
-- **Email**: thomas@dyhr.com
+- **Email**: <thomas@dyhr.com>
 
 **Testing Resources**:
+
 - `scripts/test_systems.py` - System compatibility testing
 - `scripts/security_audit.py` - Security vulnerability scanning
 - `scripts/backup_restore.py` - Backup and restore testing

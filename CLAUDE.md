@@ -9,8 +9,9 @@ This document outlines the development best practices, automation workflows, and
 ## Development Environment Setup
 
 ### Prerequisites
+
 ```bash
-# Python 3.8+ required
+# Python 3.12+ required (3.8+ supported for compatibility)
 python3 --version
 
 # Install development dependencies
@@ -18,6 +19,7 @@ pip install -r requirements-dev.txt
 ```
 
 ### Required Development Tools
+
 ```bash
 # Code formatting
 pip install black>=22.0.0
@@ -48,6 +50,7 @@ pip install -r requirements-dev.txt
 ## Code Quality Standards
 
 ### Formatting with Black
+
 ```bash
 # Format all Python files
 black mac_changer.py test_mac_changer.py setup.py
@@ -79,6 +82,7 @@ extend-exclude = '''
 ```
 
 ### Linting with Flake8
+
 ```bash
 # Run linting
 flake8 mac_changer.py test_mac_changer.py
@@ -92,6 +96,7 @@ per-file-ignores = __init__.py:F401
 ```
 
 ### Type Checking with MyPy
+
 ```bash
 # Run type checking
 mypy mac_changer.py
@@ -116,6 +121,7 @@ strict_equality = true
 ## Testing Standards
 
 ### Unit Testing
+
 ```bash
 # Run all tests
 python -m unittest test_mac_changer.py -v
@@ -134,6 +140,7 @@ python scripts/security_audit.py
 ```
 
 ### Test Coverage Requirements
+
 - **Minimum coverage**: 95% (Current: 100%)
 - **Branch coverage**: 90% (Current: 95%)
 - **All public methods**: 100% (Current: 100%)
@@ -141,6 +148,7 @@ python scripts/security_audit.py
 - **Total test cases**: 34 comprehensive tests
 
 ### Testing Checklist
+
 - [ ] All new functions have corresponding tests
 - [ ] Edge cases are covered
 - [ ] Error conditions are tested
@@ -150,6 +158,7 @@ python scripts/security_audit.py
 ## Security Standards
 
 ### Security Scanning
+
 ```bash
 # Run Bandit security scanner
 bandit -r mac_changer.py
@@ -164,6 +173,7 @@ skips = ["B101"]  # Skip assert_used test
 ```
 
 ### Security Checklist
+
 - [ ] Input validation on all user inputs
 - [ ] No hardcoded credentials or secrets
 - [ ] Proper privilege checking
@@ -174,12 +184,15 @@ skips = ["B101"]  # Skip assert_used test
 ## Version Management
 
 ### Semantic Versioning
+
 Follow [Semantic Versioning 2.0.0](https://semver.org/):
+
 - **MAJOR**: Incompatible API changes
 - **MINOR**: New functionality (backward compatible)
 - **PATCH**: Bug fixes (backward compatible)
 
 ### Version Update Process
+
 ```bash
 # Update version in mac_changer.py
 # Line format: __version__ = "1.0.0"
@@ -195,7 +208,9 @@ git push origin v1.0.0
 ## Automated Quality Assurance
 
 ### Pre-commit Hooks
+
 Create `.pre-commit-config.yaml`:
+
 ```yaml
 repos:
   - repo: https://github.com/psf/black
@@ -223,7 +238,9 @@ repos:
 ```
 
 ### GitHub Actions Workflow
+
 Create `.github/workflows/ci.yml`:
+
 ```yaml
 name: CI
 
@@ -280,7 +297,9 @@ jobs:
 ```
 
 ### Automated Release Workflow
+
 Create `.github/workflows/release.yml`:
+
 ```yaml
 name: Release
 
@@ -331,6 +350,7 @@ jobs:
 ## Development Workflow
 
 ### Branch Strategy
+
 ```bash
 # Main branches
 main        # Production-ready code
@@ -343,6 +363,7 @@ hotfix/     # Critical production fixes
 ```
 
 ### Development Process
+
 1. **Create feature branch** from `develop`
 2. **Write tests** for new functionality
 3. **Implement feature** following coding standards
@@ -353,7 +374,9 @@ hotfix/     # Critical production fixes
 8. **Release** by merging `develop` to `main`
 
 ### Quality Gates
+
 Before merging any code:
+
 - [ ] All tests pass
 - [ ] Code coverage ≥ 95%
 - [ ] No linting errors
@@ -365,6 +388,7 @@ Before merging any code:
 ## Maintenance Automation
 
 ### Dependency Updates
+
 ```bash
 # Check for outdated packages
 pip list --outdated
@@ -377,7 +401,9 @@ pip freeze > requirements.txt
 ```
 
 ### Automated Dependency Updates
+
 Create `.github/workflows/dependencies.yml`:
+
 ```yaml
 name: Update Dependencies
 
@@ -421,7 +447,9 @@ jobs:
 ```
 
 ### Version Bump Automation
+
 Create `scripts/bump_version.py`:
+
 ```python
 #!/usr/bin/env python3
 """Automated version bumping script."""
@@ -487,6 +515,7 @@ if __name__ == "__main__":
 ## Performance Monitoring
 
 ### Performance Benchmarks
+
 ```python
 # Create performance tests
 import time
@@ -508,6 +537,7 @@ class TestPerformance(unittest.TestCase):
 ```
 
 ### Memory Usage Monitoring
+
 ```python
 import tracemalloc
 import unittest
@@ -531,12 +561,14 @@ class TestMemoryUsage(unittest.TestCase):
 ## Documentation Standards
 
 ### Code Documentation
+
 - **Docstrings**: All public functions must have comprehensive docstrings
 - **Type hints**: All function parameters and return types
 - **Comments**: Explain complex logic and business rules
 - **Examples**: Include usage examples in docstrings
 
 ### API Documentation
+
 ```bash
 # Generate documentation
 sphinx-build -b html docs/ docs/_build/html
@@ -546,6 +578,7 @@ sphinx-apidoc -o docs/api mac_changer.py
 ```
 
 ### Documentation Updates
+
 - Update README.md for user-facing changes
 - Update CONTRIBUTING.md for development changes
 - Update CHANGELOG.md for all releases
@@ -554,6 +587,7 @@ sphinx-apidoc -o docs/api mac_changer.py
 ## Monitoring and Observability
 
 ### Logging Configuration
+
 ```python
 import logging
 import logging.handlers
@@ -574,6 +608,7 @@ logging.basicConfig(
 ```
 
 ### Metrics Collection
+
 ```python
 import time
 from functools import wraps
@@ -596,6 +631,7 @@ def measure_time(func):
 ## Emergency Procedures
 
 ### Hotfix Process
+
 1. **Create hotfix branch** from `main`
 2. **Implement minimal fix** with tests
 3. **Fast-track review** with senior developer
@@ -603,6 +639,7 @@ def measure_time(func):
 5. **Backport to develop** branch
 
 ### Rollback Procedures
+
 1. **Identify problematic version**
 2. **Revert to previous stable version**
 3. **Communicate to users**
@@ -612,6 +649,7 @@ def measure_time(func):
 ## Best Practices Checklist
 
 ### Before Every Commit
+
 - [ ] Run `black` for formatting
 - [ ] Run `flake8` for linting
 - [ ] Run `mypy` for type checking
@@ -621,6 +659,7 @@ def measure_time(func):
 - [ ] Update CHANGELOG.md
 
 ### Before Every Release
+
 - [ ] All tests pass on all supported Python versions
 - [ ] Code coverage ≥ 95%
 - [ ] Security scan clean
@@ -631,6 +670,7 @@ def measure_time(func):
 - [ ] Release notes prepared
 
 ### Monthly Maintenance
+
 - [ ] Review and update dependencies
 - [ ] Run security audit
 - [ ] Review and update documentation
@@ -641,11 +681,13 @@ def measure_time(func):
 ## Contact and Support
 
 ### Maintainer
+
 - **Name**: Thomas Juul Dyhr
-- **Email**: thomas@dyhr.com
+- **Email**: <thomas@dyhr.com>
 - **GitHub**: @yourusername
 
 ### Automation Issues
+
 - **CI/CD Problems**: Check GitHub Actions logs
 - **Quality Gate Failures**: Review specific tool output
 - **Release Issues**: Verify version numbering and tags

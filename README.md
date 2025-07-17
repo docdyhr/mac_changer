@@ -20,7 +20,7 @@ A Python command-line tool for changing MAC addresses on network interfaces usin
 
 ## Requirements
 
-- Python 3.6 or higher
+- Python 3.12+ (3.8+ supported for compatibility)
 - `ifconfig` command (pre-installed on most Linux/macOS systems)
 - Root/Administrator privileges for changing MAC addresses
 

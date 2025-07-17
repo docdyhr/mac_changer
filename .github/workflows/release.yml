@@ -24,7 +24,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.12'
 
     - name: Install dependencies
       run: |
@@ -90,7 +90,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.12'
 
     - name: Install build dependencies
       run: |
@@ -117,7 +117,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python-version: [3.8, 3.9, '3.10', 3.11, 3.12]
+        python-version: [3.12, 3.11, '3.10', 3.9, 3.8]
     steps:
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
@@ -234,7 +234,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.12'
 
     - name: Verify PyPI publication
       run: |

@@ -202,8 +202,10 @@ class SystemTester:
         if sys.version_info < (3, 8):
             self.log(f"Python {sys.version} is not supported (3.8+ required)", "ERROR")
             success = False
+        elif sys.version_info >= (3, 12):
+            self.log(f"Python {sys.version} is supported (optimal version)", "SUCCESS")
         else:
-            self.log(f"Python {sys.version} is supported", "SUCCESS")
+            self.log(f"Python {sys.version} is supported (3.12+ recommended)", "SUCCESS")
 
         # Test required modules
         required_modules = [
