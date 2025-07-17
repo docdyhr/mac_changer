@@ -27,12 +27,14 @@ A Python command-line tool for changing MAC addresses on network interfaces usin
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/mac_changer.git
 cd mac_changer
 ```
 
 2. (Optional) Create a virtual environment:
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
@@ -43,6 +45,7 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ## Usage
 
 ### Basic Syntax
+
 ```bash
 python3 mac_changer.py -i <interface> [options]
 ```
@@ -50,37 +53,42 @@ python3 mac_changer.py -i <interface> [options]
 ### Examples
 
 **View current MAC address:**
+
 ```bash
 python3 mac_changer.py -i eth0 -c
 ```
 
 **Change MAC address:**
+
 ```bash
 sudo python3 mac_changer.py -i eth0 -m aa:bb:cc:dd:ee:ff
 ```
 
 **Using dash-separated format:**
+
 ```bash
 sudo python3 mac_changer.py -i wlan0 -m aa-bb-cc-dd-ee-ff
 ```
 
 ### Command Line Options
 
-| Option | Long Form | Description | Example |
-|--------|-----------|-------------|---------|
-| `-i` | `--interface` | Network interface name | `-i eth0` |
-| `-m` | `--macaddress` | New MAC address | `-m aa:bb:cc:dd:ee:ff` |
-| `-c` | `--current` | Show current MAC address | `-c` |
-| `-h` | `--help` | Show help message | `-h` |
+| Option | Long Form      | Description              | Example                |
+| ------ | -------------- | ------------------------ | ---------------------- |
+| `-i`   | `--interface`  | Network interface name   | `-i eth0`              |
+| `-m`   | `--macaddress` | New MAC address          | `-m aa:bb:cc:dd:ee:ff` |
+| `-c`   | `--current`    | Show current MAC address | `-c`                   |
+| `-h`   | `--help`       | Show help message        | `-h`                   |
 
 ## Supported Formats
 
 ### Network Interfaces
+
 - Ethernet: `eth0`, `eth1`, etc.
 - Wireless: `wlan0`, `wlan1`, etc.
 - Other: `enp0s3`, `wlp2s0`, etc.
 
 ### MAC Address Formats
+
 - Colon-separated: `aa:bb:cc:dd:ee:ff`
 - Dash-separated: `aa-bb-cc-dd-ee-ff`
 - Case-insensitive (both uppercase and lowercase accepted)
@@ -103,6 +111,7 @@ python3 -m unittest test_mac_changer.py -v
 ```
 
 Or run tests directly:
+
 ```bash
 python3 test_mac_changer.py
 ```
@@ -110,6 +119,7 @@ python3 test_mac_changer.py
 ## Error Handling
 
 The tool includes comprehensive error handling for:
+
 - Invalid network interface names
 - Malformed MAC addresses
 - Missing interfaces
@@ -118,23 +128,25 @@ The tool includes comprehensive error handling for:
 
 ## Platform Support
 
-| Platform | Support | Notes |
-|----------|---------|-------|
-| Linux | ✅ Full | Primary target platform |
-| macOS | ✅ Full | Requires `ifconfig` command |
-| Windows | ❌ Limited | Not officially supported |
+| Platform | Support    | Notes                       |
+| -------- | ---------- | --------------------------- |
+| Linux    | ✅ Full    | Primary target platform     |
+| macOS    | ✅ Full    | Requires `ifconfig` command |
+| Windows  | ❌ Limited | Not officially supported    |
 
 ## Troubleshooting
 
 ### Common Issues
 
 **Permission Denied:**
+
 ```bash
 # Solution: Run with sudo
 sudo python3 mac_changer.py -i eth0 -m aa:bb:cc:dd:ee:ff
 ```
 
 **Interface Not Found:**
+
 ```bash
 # Solution: Check available interfaces
 ip link show  # Linux
@@ -142,6 +154,7 @@ ifconfig -a   # macOS/Linux
 ```
 
 **Command Not Found (ifconfig):**
+
 ```bash
 # On newer Linux distributions, install net-tools
 sudo apt-get install net-tools  # Debian/Ubuntu
@@ -151,6 +164,7 @@ sudo yum install net-tools      # RHEL/CentOS
 ## Development
 
 ### Project Structure
+
 ```
 mac_changer/
 ├── mac_changer.py              # Main application (improved version)
@@ -201,6 +215,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines and [TODO.md](TOD
 ### Code Style
 
 The project follows Python best practices:
+
 - PEP 8 style guidelines
 - Comprehensive docstrings
 - Type hints (where applicable)
@@ -217,6 +232,7 @@ See [CLAUDE.md](CLAUDE.md) for detailed development practices and automation set
 ### Production Readiness Status
 
 **✅ PRODUCTION READY** - All P0 Critical Items completed:
+
 - **System Testing**: Multi-platform compatibility verified
 - **Backup Procedures**: Complete backup and restore system
 - **Security Audit**: Comprehensive security scanning and hardening

@@ -2,9 +2,12 @@
 
 ## Overview
 
-This document outlines the development best practices, automation workflows, and maintenance procedures for the MAC Address Changer project. It serves as a guide for consistent development practices and automated quality assurance.
+This document outlines the development best practices, automation workflows,
+and maintenance procedures for the MAC Address Changer project. It serves as a
+guide for consistent development practices and automated quality assurance.
 
-**Project Status**: ✅ **PRODUCTION READY** - All P0 Critical Items completed with enterprise-grade features, security hardening, and comprehensive testing.
+**Project Status**: ✅ **PRODUCTION READY** - All P0 Critical Items completed
+with enterprise-grade features, security hardening, and comprehensive testing.
 
 ## Development Environment Setup
 
@@ -43,9 +46,36 @@ pip install safety>=2.0.0
 pip install sphinx>=4.0.0
 pip install sphinx-rtd-theme>=1.0.0
 
-# Or install all at once
+# Markdown formatting and linting
+npm install -g prettier markdownlint-cli2
+
+# Or install all Python dependencies at once
 pip install -r requirements-dev.txt
 ```
+
+### Markdown Quality Standards
+
+All markdown files must follow these standards:
+
+```bash
+# Format markdown files before committing
+prettier --write "*.md" "docs/**/*.md"
+
+# Lint markdown files
+markdownlint-cli2 "*.md" "docs/**/*.md"
+
+# Pre-commit hooks will automatically run these checks
+```
+
+**Markdown Best Practices:**
+
+- Use consistent heading styles (ATX style with `#`)
+- Limit line length to 80 characters for prose
+- Use proper link formatting `[text](url)`
+- Include alt text for images `![alt text](image.png)`
+- Use fenced code blocks with language specification
+- Keep blank lines consistent (1 line between sections)
+- Use bullet points consistently (dash `-` style)
 
 ## Code Quality Standards
 
@@ -93,6 +123,26 @@ max-line-length = 88
 exclude = .git,__pycache__,archive,.venv
 ignore = E203,W503
 per-file-ignores = __init__.py:F401
+```
+
+### Markdown Formatting and Linting
+
+```bash
+# Format markdown files with prettier
+npx prettier --write "*.md" "**/*.md"
+
+# Check markdown formatting
+npx prettier --check "*.md" "**/*.md"
+
+# Lint markdown files
+npx markdownlint-cli2 "*.md" "**/*.md"
+
+# Install tools globally (recommended)
+npm install -g prettier markdownlint-cli2
+
+# Then use directly
+prettier --write README.md CONTRIBUTING.md CLAUDE.md
+markdownlint-cli2 README.md CONTRIBUTING.md CLAUDE.md
 ```
 
 ### Type Checking with MyPy
@@ -213,11 +263,26 @@ Create `.pre-commit-config.yaml`:
 
 ```yaml
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: debug-statements
+      - id: mixed-line-ending
+      - id: requirements-txt-fixer
+
   - repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
       - id: black
-        language_version: python3.8
+        language_version: python3.12
+        args: ["--line-length=88"]
 
   - repo: https://github.com/pycqa/flake8
     rev: 4.0.1
@@ -235,6 +300,66 @@ repos:
     hooks:
       - id: bandit
         args: ["-c", ".bandit"]
+
+  # Markdown formatting and linting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.3
+    hooks:
+      - id: prettier
+        files: \.(md|markdown)$
+        args: ["--write"]
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.37.0
+    hooks:
+      - id: markdownlint
+        files: \.(md|markdown)$
+        args: ["--fix"]
+```
+
+### Markdown Configuration Files
+
+Create `.prettierrc` for consistent formatting:
+
+```json
+{
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": false,
+  "singleQuote": false,
+  "quoteProps": "as-needed",
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "proseWrap": "preserve",
+  "endOfLine": "lf"
+}
+```
+
+Create `.markdownlint.json` for linting rules:
+
+```json
+{
+  "default": true,
+  "MD001": true,
+  "MD003": { "style": "atx" },
+  "MD004": { "style": "dash" },
+  "MD007": { "indent": 2 },
+  "MD013": { "line_length": 80, "code_blocks": false, "tables": false },
+  "MD022": { "lines_above": 1, "lines_below": 1 },
+  "MD024": { "siblings_only": true },
+  "MD025": { "front_matter_title": "^\\s*title\\s*[:=]" },
+  "MD026": { "punctuation": ".,;:!?" },
+  "MD029": { "style": "ordered" },
+  "MD033": { "allowed_elements": ["details", "summary", "br"] },
+  "MD034": false,
+  "MD036": { "punctuation": ".,;:!?" },
+  "MD040": true,
+  "MD041": { "front_matter_title": "^\\s*title\\s*[:=]" },
+  "MD046": { "style": "fenced" },
+  "MD049": { "style": "underscore" },
+  "MD050": { "style": "asterisk" }
+}
 ```
 
 ### GitHub Actions Workflow
@@ -246,54 +371,54 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, '3.10', 3.11]
+        python-version: [3.8, 3.9, "3.10", 3.11]
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
-    
-    - name: Format with Black
-      run: |
-        black --check mac_changer.py test_mac_changer.py setup.py
-    
-    - name: Lint with Flake8
-      run: |
-        flake8 mac_changer.py test_mac_changer.py
-    
-    - name: Type check with MyPy
-      run: |
-        mypy mac_changer.py
-    
-    - name: Security scan with Bandit
-      run: |
-        bandit -r mac_changer.py
-    
-    - name: Test with pytest
-      run: |
-        pytest test_mac_changer.py --cov=mac_changer --cov-report=xml
-    
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Format with Black
+        run: |
+          black --check mac_changer.py test_mac_changer.py setup.py
+
+      - name: Lint with Flake8
+        run: |
+          flake8 mac_changer.py test_mac_changer.py
+
+      - name: Type check with MyPy
+        run: |
+          mypy mac_changer.py
+
+      - name: Security scan with Bandit
+        run: |
+          bandit -r mac_changer.py
+
+      - name: Test with pytest
+        run: |
+          pytest test_mac_changer.py --cov=mac_changer --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
 ```
 
 ### Automated Release Workflow
@@ -306,45 +431,45 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build twine
-    
-    - name: Build package
-      run: |
-        python -m build
-    
-    - name: Create GitHub Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
-    
-    - name: Publish to PyPI
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-      run: |
-        twine upload dist/*
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build package
+        run: |
+          python -m build
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: |
+          twine upload dist/*
 ```
 
 ## Development Workflow
@@ -367,11 +492,47 @@ hotfix/     # Critical production fixes
 1. **Create feature branch** from `develop`
 2. **Write tests** for new functionality
 3. **Implement feature** following coding standards
-4. **Run quality checks** (format, lint, type check, test)
-5. **Create pull request** to `develop`
-6. **Code review** and approval
-7. **Merge to develop** after CI passes
-8. **Release** by merging `develop` to `main`
+4. **Format and lint markdown** files if documentation changed
+5. **Run quality checks** (format, lint, type check, test)
+6. **Create pull request** to `develop`
+7. **Code review** and approval
+8. **Merge to develop** after CI passes
+9. **Release** by merging `develop` to `main`
+
+### Markdown Documentation Workflow
+
+When updating documentation:
+
+```bash
+# 1. Format markdown files
+prettier --write README.md CONTRIBUTING.md CLAUDE.md
+
+# 2. Lint markdown files
+markdownlint-cli2 README.md CONTRIBUTING.md CLAUDE.md
+
+# 3. Commit changes (pre-commit hooks will run automatically)
+git add -A
+git commit -m "docs: update documentation"
+```
+
+**Important**: All markdown files must pass prettier formatting and
+markdownlint checks before commit. The pre-commit hooks will automatically
+format and fix most issues, but may require manual intervention for complex
+problems.
+
+**Current Status**: Some existing markdown files may have linting issues that
+need manual fixing. Run the following commands to identify and fix issues:
+
+```bash
+# Check all markdown files
+markdownlint-cli2 "*.md"
+
+# Fix automatically where possible
+markdownlint-cli2 --fix "*.md"
+
+# Format with prettier
+prettier --write "*.md"
+```
 
 ### Quality Gates
 
@@ -409,41 +570,41 @@ name: Update Dependencies
 
 on:
   schedule:
-    - cron: '0 0 * * 1'  # Weekly on Monday
+    - cron: "0 0 * * 1" # Weekly on Monday
   workflow_dispatch:
 
 jobs:
   update-deps:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-    
-    - name: Update dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pip-tools
-        pip-compile --upgrade requirements.in
-        pip-compile --upgrade requirements-dev.in
-    
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: Update dependencies
-        title: 'chore: update dependencies'
-        body: |
-          Automated dependency update
-          
-          - Updated all dependencies to latest versions
-          - Ran security scans
-          - All tests pass
-        branch: update-dependencies
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Update dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pip-tools
+          pip-compile --upgrade requirements.in
+          pip-compile --upgrade requirements-dev.in
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update dependencies
+          title: "chore: update dependencies"
+          body: |
+            Automated dependency update
+
+            - Updated all dependencies to latest versions
+            - Ran security scans
+            - All tests pass
+          branch: update-dependencies
 ```
 
 ### Version Bump Automation
@@ -460,19 +621,19 @@ from pathlib import Path
 
 def bump_version(version_type: str) -> None:
     """Bump version in mac_changer.py and setup.py."""
-    
+
     # Read current version
     mac_changer_path = Path("mac_changer.py")
     content = mac_changer_path.read_text()
-    
+
     # Extract current version
     version_match = re.search(r'__version__ = "(\d+)\.(\d+)\.(\d+)"', content)
     if not version_match:
         print("Error: Could not find version in mac_changer.py")
         sys.exit(1)
-    
+
     major, minor, patch = map(int, version_match.groups())
-    
+
     # Bump version
     if version_type == "major":
         major += 1
@@ -486,9 +647,9 @@ def bump_version(version_type: str) -> None:
     else:
         print("Error: version_type must be 'major', 'minor', or 'patch'")
         sys.exit(1)
-    
+
     new_version = f"{major}.{minor}.{patch}"
-    
+
     # Update mac_changer.py
     new_content = re.sub(
         r'__version__ = "\d+\.\d+\.\d+"',
@@ -496,7 +657,7 @@ def bump_version(version_type: str) -> None:
         content
     )
     mac_changer_path.write_text(new_content)
-    
+
     print(f"Updated version to {new_version}")
     print("Don't forget to:")
     print(f"1. git add mac_changer.py")
@@ -508,7 +669,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python bump_version.py <major|minor|patch>")
         sys.exit(1)
-    
+
     bump_version(sys.argv[1])
 ```
 
@@ -526,12 +687,12 @@ class TestPerformance(unittest.TestCase):
     def test_validation_performance(self):
         """Test MAC address validation performance."""
         mac_changer = MACChanger()
-        
+
         start_time = time.time()
         for _ in range(10000):
             mac_changer.validate_mac_address("aa:bb:cc:dd:ee:ff")
         end_time = time.time()
-        
+
         # Should complete 10k validations in under 1 second
         self.assertLess(end_time - start_time, 1.0)
 ```
@@ -547,13 +708,13 @@ class TestMemoryUsage(unittest.TestCase):
     def test_memory_usage(self):
         """Test memory usage doesn't exceed reasonable limits."""
         tracemalloc.start()
-        
+
         mac_changer = MACChanger()
         # Perform operations
-        
+
         current, peak = tracemalloc.get_traced_memory()
         tracemalloc.stop()
-        
+
         # Should use less than 10MB
         self.assertLess(peak, 10 * 1024 * 1024)
 ```
@@ -620,7 +781,7 @@ def measure_time(func):
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        
+
         logger.info(
             f"Function {func.__name__} took {end_time - start_time:.4f} seconds"
         )
@@ -654,6 +815,8 @@ def measure_time(func):
 - [ ] Run `flake8` for linting
 - [ ] Run `mypy` for type checking
 - [ ] Run `bandit` for security scanning
+- [ ] Run `prettier` for markdown formatting
+- [ ] Run `markdownlint-cli2` for markdown linting
 - [ ] Run full test suite
 - [ ] Update documentation if needed
 - [ ] Update CHANGELOG.md
@@ -694,7 +857,8 @@ def measure_time(func):
 
 ---
 
-*This document is automatically updated with each release and should be reviewed quarterly for accuracy and completeness.*
+_This document is automatically updated with each release and should be_
+_reviewed quarterly for accuracy and completeness._
 
 **Last Updated**: December 2024  
 **Version**: 1.0.0  

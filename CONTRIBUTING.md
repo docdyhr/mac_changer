@@ -98,16 +98,16 @@ Example docstring format:
 ```python
 def validate_mac_address(self, mac_addr: str) -> str:
     """Validate MAC address format.
-    
+
     Args:
         mac_addr: MAC address string to validate
-        
+
     Returns:
         Normalized MAC address (lowercase with colons)
-        
+
     Raises:
         argparse.ArgumentTypeError: If MAC address format is invalid
-        
+
     Example:
         >>> validator.validate_mac_address("AA:BB:CC:DD:EE:FF")
         "aa:bb:cc:dd:ee:ff"
