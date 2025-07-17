@@ -1,0 +1,47 @@
+# Development Requirements for MAC Address Changer
+# Install with: pip install -r requirements-dev.txt
+
+# Code formatting
+black>=22.0.0
+
+# Linting
+flake8>=4.0.0
+pylint>=2.15.0
+
+# Type checking
+mypy>=0.950
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=3.0.0
+pytest-mock>=3.10.0
+
+# Security scanning
+bandit>=1.7.0
+safety>=2.0.0
+
+# Documentation
+sphinx>=4.0.0
+sphinx-rtd-theme>=1.0.0
+
+# Pre-commit hooks
+pre-commit>=2.20.0
+
+# Dependency management
+pip-tools>=6.8.0
+pip-review>=1.2.0
+
+# Build tools
+build>=0.8.0
+twine>=4.0.0
+
+# Coverage reporting
+coverage>=6.0.0
+
+# Development utilities
+ipython>=8.0.0
+pdbpp>=0.10.3
+
+# Code quality
+autopep8>=1.6.0
+isort>=5.10.0

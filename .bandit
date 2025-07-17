@@ -1,0 +1,351 @@
+[bandit]
+exclude_dirs = ["archive", ".venv", "__pycache__", ".pytest_cache", ".mypy_cache", "build", "dist", ".eggs"]
+skips = ["B101"]  # Skip assert_used test
+
+# Test framework related
+tests = ["B101"]
+
+# Confidence levels: LOW, MEDIUM, HIGH
+confidence = ["HIGH", "MEDIUM"]
+
+# Severity levels: LOW, MEDIUM, HIGH
+severity = ["MEDIUM", "HIGH"]
+
+# Format output
+format = "txt"
+
+# Enable verbose output
+verbose = true
+
+# Aggregate output by vulnerability
+aggregate = "vuln"
+
+# Number of lines of code context to display
+context_lines = 3
+
+# Include test results in output
+include_test_results = true
+
+# Plugins to load
+plugins = ["B201", "B301", "B302", "B303", "B304", "B305", "B306", "B307", "B308", "B309", "B310", "B311", "B312", "B313", "B314", "B315", "B316", "B317", "B318", "B319", "B320", "B321", "B322", "B323", "B324", "B325", "B501", "B502", "B503", "B504", "B505", "B506", "B507", "B601", "B602", "B603", "B604", "B605", "B606", "B607", "B608", "B609", "B610", "B611", "B701", "B702", "B703"]
+
+# Blacklist calls
+blacklist_calls = ["subprocess.call", "subprocess.run", "subprocess.Popen"]
+
+# Blacklist imports
+blacklist_imports = ["pickle", "cPickle", "subprocess"]
+
+# Shell injection patterns
+shell_injection = ["shell=True", "shell=1"]
+
+# Hard-coded password patterns
+hardcoded_password_patterns = ["password", "passwd", "pwd", "secret", "key", "token", "auth"]
+
+# SQL injection patterns
+sql_injection = ["execute", "executemany", "query", "raw"]
+
+# Path traversal patterns
+path_traversal = ["../", "..\\", "%2e%2e%2f", "%2e%2e%5c"]
+
+# Command injection patterns
+command_injection = ["os.system", "os.popen", "subprocess.call", "subprocess.run"]
+
+# XML vulnerabilities
+xml_vulnerabilities = ["xml.etree", "xml.sax", "xml.dom", "lxml"]
+
+# Crypto vulnerabilities
+crypto_vulnerabilities = ["md5", "sha1", "des", "3des", "rc4"]
+
+# Network vulnerabilities
+network_vulnerabilities = ["ssl", "tls", "urllib", "requests"]
+
+# File system vulnerabilities
+filesystem_vulnerabilities = ["pickle", "shelve", "tempfile"]
+
+# Regular expression vulnerabilities
+regex_vulnerabilities = ["re.compile", "re.search", "re.match"]
+
+# Logging vulnerabilities
+logging_vulnerabilities = ["logging", "print", "sys.stdout", "sys.stderr"]
+
+# Random number vulnerabilities
+random_vulnerabilities = ["random", "os.urandom"]
+
+# Assert vulnerabilities
+assert_vulnerabilities = ["assert"]
+
+# Try-except vulnerabilities
+try_except_vulnerabilities = ["except:", "except Exception:", "except BaseException:"]
+
+# Import vulnerabilities
+import_vulnerabilities = ["__import__", "importlib", "exec", "eval"]
+
+# Flask vulnerabilities
+flask_vulnerabilities = ["debug=True", "use_reloader=True", "use_debugger=True"]
+
+# Django vulnerabilities
+django_vulnerabilities = ["DEBUG=True", "ALLOWED_HOSTS=[]"]
+
+# Jinja2 vulnerabilities
+jinja2_vulnerabilities = ["autoescape=False", "Markup"]
+
+# Mako vulnerabilities
+mako_vulnerabilities = ["default_filters=[]", "disable_unicode=False"]
+
+# Tornado vulnerabilities
+tornado_vulnerabilities = ["debug=True", "autoreload=True"]
+
+# Paramiko vulnerabilities
+paramiko_vulnerabilities = ["AutoAddPolicy", "set_missing_host_key_policy"]
+
+# Requests vulnerabilities
+requests_vulnerabilities = ["verify=False", "cert=None"]
+
+# YAML vulnerabilities
+yaml_vulnerabilities = ["yaml.load", "yaml.unsafe_load"]
+
+# Pickle vulnerabilities
+pickle_vulnerabilities = ["pickle.loads", "pickle.load", "cPickle.loads", "cPickle.load"]
+
+# Subprocess vulnerabilities
+subprocess_vulnerabilities = ["shell=True", "executable=", "env="]
+
+# OS vulnerabilities
+os_vulnerabilities = ["os.system", "os.popen", "os.spawn", "os.exec"]
+
+# Telnet vulnerabilities
+telnet_vulnerabilities = ["telnetlib"]
+
+# FTP vulnerabilities
+ftp_vulnerabilities = ["ftplib"]
+
+# LDAP vulnerabilities
+ldap_vulnerabilities = ["ldap"]
+
+# SNI vulnerabilities
+sni_vulnerabilities = ["ssl.wrap_socket", "ssl.create_default_context"]
+
+# Certificate vulnerabilities
+certificate_vulnerabilities = ["ssl.CERT_NONE", "ssl.CERT_OPTIONAL"]
+
+# Cryptographic vulnerabilities
+cryptographic_vulnerabilities = ["Crypto.Cipher", "cryptography"]
+
+# JWT vulnerabilities
+jwt_vulnerabilities = ["jwt.decode", "verify=False"]
+
+# URL vulnerabilities
+url_vulnerabilities = ["urllib.request.urlopen", "urllib2.urlopen"]
+
+# Memory vulnerabilities
+memory_vulnerabilities = ["ctypes", "mmap"]
+
+# Deserialization vulnerabilities
+deserialization_vulnerabilities = ["pickle", "cPickle", "marshal", "shelve"]
+
+# Template vulnerabilities
+template_vulnerabilities = ["eval", "exec", "compile"]
+
+# Input validation vulnerabilities
+input_validation_vulnerabilities = ["input", "raw_input", "sys.stdin"]
+
+# Path manipulation vulnerabilities
+path_manipulation_vulnerabilities = ["os.path.join", "pathlib"]
+
+# File operations vulnerabilities
+file_operations_vulnerabilities = ["open", "file", "codecs.open"]
+
+# Environment vulnerabilities
+environment_vulnerabilities = ["os.environ", "os.getenv", "os.putenv"]
+
+# Signal vulnerabilities
+signal_vulnerabilities = ["signal", "os.kill"]
+
+# Process vulnerabilities
+process_vulnerabilities = ["multiprocessing", "threading"]
+
+# Socket vulnerabilities
+socket_vulnerabilities = ["socket", "socketserver"]
+
+# HTTP vulnerabilities
+http_vulnerabilities = ["http.server", "BaseHTTPServer", "SimpleHTTPServer"]
+
+# Database vulnerabilities
+database_vulnerabilities = ["sqlite3", "mysql", "postgresql", "mongodb"]
+
+# Serialization vulnerabilities
+serialization_vulnerabilities = ["json", "yaml", "xml", "pickle"]
+
+# Compression vulnerabilities
+compression_vulnerabilities = ["zipfile", "tarfile", "gzip", "bz2"]
+
+# Archive vulnerabilities
+archive_vulnerabilities = ["zipfile.ZipFile", "tarfile.TarFile"]
+
+# Hash vulnerabilities
+hash_vulnerabilities = ["hashlib.md5", "hashlib.sha1"]
+
+# Encoding vulnerabilities
+encoding_vulnerabilities = ["base64", "binascii", "codecs"]
+
+# Time vulnerabilities
+time_vulnerabilities = ["time.sleep", "threading.Timer"]
+
+# Configuration vulnerabilities
+configuration_vulnerabilities = ["configparser", "json.loads", "yaml.load"]
+
+# Logging configuration vulnerabilities
+logging_config_vulnerabilities = ["logging.config", "dictConfig"]
+
+# Email vulnerabilities
+email_vulnerabilities = ["smtplib", "email"]
+
+# Web framework vulnerabilities
+web_framework_vulnerabilities = ["flask", "django", "tornado", "pyramid"]
+
+# ORM vulnerabilities
+orm_vulnerabilities = ["sqlalchemy", "django.db", "peewee"]
+
+# Cache vulnerabilities
+cache_vulnerabilities = ["redis", "memcached", "pickle"]
+
+# Message queue vulnerabilities
+message_queue_vulnerabilities = ["celery", "rq", "kombu"]
+
+# Testing vulnerabilities
+testing_vulnerabilities = ["unittest", "pytest", "nose"]
+
+# Development vulnerabilities
+development_vulnerabilities = ["pdb", "ipdb", "pudb"]
+
+# Profiling vulnerabilities
+profiling_vulnerabilities = ["cProfile", "profile", "pstats"]
+
+# Debugging vulnerabilities
+debugging_vulnerabilities = ["traceback", "sys.exc_info", "inspect"]
+
+# Reflection vulnerabilities
+reflection_vulnerabilities = ["getattr", "setattr", "hasattr", "vars", "dir"]
+
+# Dynamic code vulnerabilities
+dynamic_code_vulnerabilities = ["exec", "eval", "compile", "__import__"]
+
+# Bytecode vulnerabilities
+bytecode_vulnerabilities = ["py_compile", "compileall", "dis"]
+
+# Module vulnerabilities
+module_vulnerabilities = ["imp", "importlib", "pkgutil"]
+
+# System vulnerabilities
+system_vulnerabilities = ["sys", "os", "subprocess", "platform"]
+
+# Runtime vulnerabilities
+runtime_vulnerabilities = ["gc", "weakref", "resource"]
+
+# Memory management vulnerabilities
+memory_management_vulnerabilities = ["ctypes", "mmap", "array"]
+
+# Concurrency vulnerabilities
+concurrency_vulnerabilities = ["threading", "multiprocessing", "asyncio"]
+
+# Networking vulnerabilities
+networking_vulnerabilities = ["socket", "ssl", "urllib", "requests"]
+
+# Serialization format vulnerabilities
+serialization_format_vulnerabilities = ["json", "pickle", "yaml", "xml"]
+
+# File format vulnerabilities
+file_format_vulnerabilities = ["csv", "pdf", "docx", "xlsx"]
+
+# Image vulnerabilities
+image_vulnerabilities = ["PIL", "Pillow", "opencv"]
+
+# Audio vulnerabilities
+audio_vulnerabilities = ["wave", "audioop", "ossaudiodev"]
+
+# Video vulnerabilities
+video_vulnerabilities = ["cv2", "ffmpeg", "moviepy"]
+
+# Scientific computing vulnerabilities
+scientific_computing_vulnerabilities = ["numpy", "scipy", "pandas"]
+
+# Machine learning vulnerabilities
+machine_learning_vulnerabilities = ["sklearn", "tensorflow", "pytorch"]
+
+# Natural language processing vulnerabilities
+nlp_vulnerabilities = ["nltk", "spacy", "gensim"]
+
+# Data visualization vulnerabilities
+data_visualization_vulnerabilities = ["matplotlib", "plotly", "bokeh"]
+
+# Web scraping vulnerabilities
+web_scraping_vulnerabilities = ["beautifulsoup", "scrapy", "selenium"]
+
+# API vulnerabilities
+api_vulnerabilities = ["requests", "urllib", "httpx"]
+
+# Authentication vulnerabilities
+authentication_vulnerabilities = ["oauth", "jwt", "passport"]
+
+# Authorization vulnerabilities
+authorization_vulnerabilities = ["rbac", "acl", "permissions"]
+
+# Session management vulnerabilities
+session_management_vulnerabilities = ["session", "cookie", "token"]
+
+# Cross-site scripting vulnerabilities
+xss_vulnerabilities = ["html", "javascript", "script"]
+
+# Cross-site request forgery vulnerabilities
+csrf_vulnerabilities = ["csrf", "token", "referrer"]
+
+# SQL injection vulnerabilities
+sql_injection_vulnerabilities = ["sql", "query", "execute"]
+
+# NoSQL injection vulnerabilities
+nosql_injection_vulnerabilities = ["mongodb", "redis", "elasticsearch"]
+
+# LDAP injection vulnerabilities
+ldap_injection_vulnerabilities = ["ldap", "directory", "bind"]
+
+# XML injection vulnerabilities
+xml_injection_vulnerabilities = ["xml", "xpath", "xquery"]
+
+# Command injection vulnerabilities
+command_injection_vulnerabilities = ["os.system", "subprocess", "exec"]
+
+# File inclusion vulnerabilities
+file_inclusion_vulnerabilities = ["include", "require", "import"]
+
+# Directory traversal vulnerabilities
+directory_traversal_vulnerabilities = ["../", "..\\", "path"]
+
+# Server-side request forgery vulnerabilities
+ssrf_vulnerabilities = ["requests", "urllib", "curl"]
+
+# Insecure direct object references vulnerabilities
+idor_vulnerabilities = ["id", "user", "object"]
+
+# Security misconfiguration vulnerabilities
+security_misconfiguration_vulnerabilities = ["debug", "config", "settings"]
+
+# Sensitive data exposure vulnerabilities
+sensitive_data_exposure_vulnerabilities = ["password", "secret", "key"]
+
+# Broken access control vulnerabilities
+broken_access_control_vulnerabilities = ["access", "permission", "authorization"]
+
+# Security logging vulnerabilities
+security_logging_vulnerabilities = ["logging", "audit", "monitoring"]
+
+# Cryptographic failures vulnerabilities
+cryptographic_failures_vulnerabilities = ["crypto", "hash", "encryption"]
+
+# Software and data integrity failures vulnerabilities
+integrity_failures_vulnerabilities = ["signature", "checksum", "hash"]
+
+# Security logging and monitoring failures vulnerabilities
+logging_monitoring_failures_vulnerabilities = ["logging", "monitoring", "alerting"]
+
+# Server-side request forgery vulnerabilities
+ssrf_vulnerabilities = ["requests", "urllib", "httpx"]

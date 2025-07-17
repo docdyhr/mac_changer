@@ -186,3 +186,6 @@ pip-selfcheck.json
 .envrc
 # exclude private files
 private*
+
+# Archive directory contains old versions for reference
+# and should be tracked in git for project history

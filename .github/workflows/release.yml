@@ -1,0 +1,290 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Extract version
+      id: version
+      run: |
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+          VERSION="${{ github.event.inputs.version }}"
+        else
+          VERSION="${{ github.ref_name }}"
+        fi
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
+        echo "Version: ${VERSION}"
+
+    - name: Validate version format
+      run: |
+        VERSION="${{ steps.version.outputs.version }}"
+        if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "❌ Invalid version format: $VERSION"
+          echo "Expected format: v1.0.0"
+          exit 1
+        fi
+        echo "✅ Version format is valid: $VERSION"
+
+    - name: Check version in code
+      run: |
+        VERSION="${{ steps.version.outputs.version }}"
+        CODE_VERSION=$(python -c "import mac_changer; print(mac_changer.__version__)")
+        TAG_VERSION=${VERSION#v}
+
+        if [[ "$CODE_VERSION" != "$TAG_VERSION" ]]; then
+          echo "❌ Version mismatch:"
+          echo "  Code version: $CODE_VERSION"
+          echo "  Tag version: $TAG_VERSION"
+          exit 1
+        fi
+        echo "✅ Version matches: $CODE_VERSION"
+
+    - name: Run full test suite
+      run: |
+        pytest test_mac_changer.py --cov=mac_changer --cov-report=xml -v
+
+    - name: Security scan
+      run: |
+        bandit -r mac_changer.py
+        safety check
+
+    - name: Code quality check
+      run: |
+        black --check mac_changer.py test_mac_changer.py setup.py
+        flake8 mac_changer.py test_mac_changer.py setup.py
+        mypy mac_changer.py
+
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine wheel
+
+    - name: Build package
+      run: |
+        python -m build
+
+    - name: Verify package
+      run: |
+        twine check dist/*
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+  test-install:
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: [3.8, 3.9, '3.10', 3.11, 3.12]
+    steps:
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+    - name: Install package
+      run: |
+        pip install dist/*.whl
+
+    - name: Test installation
+      run: |
+        python -c "import mac_changer; print(f'✅ Successfully imported mac_changer v{mac_changer.__version__}')"
+        mac-changer --help
+
+  release:
+    needs: [validate, build, test-install]
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist/
+
+    - name: Generate changelog
+      id: changelog
+      run: |
+        VERSION="${{ needs.validate.outputs.version }}"
+
+        # Get previous tag
+        PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+
+        # Generate changelog content
+        echo "## What's New in $VERSION" > CHANGELOG_TEMP.md
+        echo "" >> CHANGELOG_TEMP.md
+
+        if [[ -n "$PREVIOUS_TAG" ]]; then
+          echo "### Changes since $PREVIOUS_TAG" >> CHANGELOG_TEMP.md
+          echo "" >> CHANGELOG_TEMP.md
+
+          # Get commit messages
+          git log --pretty=format:"- %s" ${PREVIOUS_TAG}..HEAD >> CHANGELOG_TEMP.md
+        else
+          echo "### Initial Release" >> CHANGELOG_TEMP.md
+          echo "" >> CHANGELOG_TEMP.md
+          echo "- Initial release of MAC Address Changer" >> CHANGELOG_TEMP.md
+        fi
+
+        echo "" >> CHANGELOG_TEMP.md
+        echo "### Installation" >> CHANGELOG_TEMP.md
+        echo "" >> CHANGELOG_TEMP.md
+        echo '```bash' >> CHANGELOG_TEMP.md
+        echo "pip install mac-address-changer==${VERSION#v}" >> CHANGELOG_TEMP.md
+        echo '```' >> CHANGELOG_TEMP.md
+        echo "" >> CHANGELOG_TEMP.md
+        echo "### Download" >> CHANGELOG_TEMP.md
+        echo "" >> CHANGELOG_TEMP.md
+        echo "- **Source Code**: Download from the assets below" >> CHANGELOG_TEMP.md
+        echo "- **Python Package**: Available on PyPI" >> CHANGELOG_TEMP.md
+        echo "- **Documentation**: See README.md" >> CHANGELOG_TEMP.md
+
+        # Set output for GitHub release
+        echo "changelog<<EOF" >> $GITHUB_OUTPUT
+        cat CHANGELOG_TEMP.md >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ needs.validate.outputs.version }}
+        name: Release ${{ needs.validate.outputs.version }}
+        body: ${{ steps.changelog.outputs.changelog }}
+        draft: false
+        prerelease: false
+        files: |
+          dist/*
+        generate_release_notes: true
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+        verbose: true
+
+    - name: Update version tracking
+      run: |
+        VERSION="${{ needs.validate.outputs.version }}"
+        echo "Released version: $VERSION" >> $GITHUB_STEP_SUMMARY
+        echo "PyPI package: https://pypi.org/project/mac-address-changer/" >> $GITHUB_STEP_SUMMARY
+        echo "GitHub release: https://github.com/${{ github.repository }}/releases/tag/$VERSION" >> $GITHUB_STEP_SUMMARY
+
+  post-release:
+    needs: [validate, release]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Verify PyPI publication
+      run: |
+        VERSION="${{ needs.validate.outputs.version }}"
+        PACKAGE_VERSION=${VERSION#v}
+
+        # Wait for PyPI to update
+        sleep 60
+
+        # Check if package is available
+        pip index versions mac-address-changer | grep $PACKAGE_VERSION || {
+          echo "❌ Package not found on PyPI"
+          exit 1
+        }
+
+        echo "✅ Package successfully published to PyPI"
+
+    - name: Test PyPI installation
+      run: |
+        VERSION="${{ needs.validate.outputs.version }}"
+        PACKAGE_VERSION=${VERSION#v}
+
+        # Install from PyPI
+        pip install mac-address-changer==$PACKAGE_VERSION
+
+        # Test installation
+        python -c "import mac_changer; print(f'✅ PyPI installation successful: v{mac_changer.__version__}')"
+        mac-changer --help
+
+    - name: Create post-release summary
+      run: |
+        VERSION="${{ needs.validate.outputs.version }}"
+
+        echo "# 🎉 Release Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Version: $VERSION" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **GitHub Release**: Created successfully" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **PyPI Package**: Published successfully" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **Installation**: Verified working" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Quick Start" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo '```bash' >> $GITHUB_STEP_SUMMARY
+        echo "pip install mac-address-changer==${VERSION#v}" >> $GITHUB_STEP_SUMMARY
+        echo "mac-changer --help" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Links" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- [GitHub Release](https://github.com/${{ github.repository }}/releases/tag/$VERSION)" >> $GITHUB_STEP_SUMMARY
+        echo "- [PyPI Package](https://pypi.org/project/mac-address-changer/)" >> $GITHUB_STEP_SUMMARY
+        echo "- [Documentation](https://github.com/${{ github.repository }}/blob/main/README.md)" >> $GITHUB_STEP_SUMMARY

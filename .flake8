@@ -1,0 +1,36 @@
+[flake8]
+max-line-length = 88
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    .tox,
+    .eggs,
+    *.egg,
+    build,
+    dist,
+    archive,
+    .mypy_cache,
+    .pytest_cache
+
+ignore =
+    E203,  # whitespace before ':'
+    W503,  # line break before binary operator
+    E501,  # line too long (handled by black)
+    W504,  # line break after binary operator
+
+per-file-ignores =
+    __init__.py:F401
+
+max-complexity = 10
+doctests = True
+show-source = True
+statistics = True
+count = True
+
+# Error codes to always report
+select =
+    E,  # pycodestyle errors
+    W,  # pycodestyle warnings
+    F,  # pyflakes
+    C,  # mccabe complexity

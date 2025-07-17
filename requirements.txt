@@ -1,0 +1,9 @@
+# MAC Address Changer - Runtime Dependencies
+# This project uses only Python standard library modules
+# No external runtime dependencies required for basic functionality
+
+# Production dependencies: NONE
+# The application runs with Python 3.8+ standard library only
+
+# For development dependencies, see requirements-dev.txt
+# For installation with all features: pip install -r requirements-dev.txt

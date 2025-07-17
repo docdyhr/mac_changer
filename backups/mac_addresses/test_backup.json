@@ -1,0 +1,237 @@
+{
+  "backup_name": "test_backup",
+  "timestamp": "2025-07-17T16:25:35.387750",
+  "system_info": {
+    "hostname": "d737e68c-30e6-4256-a62e-96b5323f7838.fritz.box",
+    "system": "Darwin",
+    "release": "22.6.0",
+    "machine": "x86_64",
+    "timestamp": "2025-07-17T16:25:35.387843",
+    "timezone": [
+      "CET",
+      "CEST"
+    ]
+  },
+  "interfaces": {
+    "lo0": {
+      "name": "lo0",
+      "mac_address": null,
+      "status": "up",
+      "type": "loopback",
+      "ip_address": "127.0.0.1"
+    },
+    "inet6": {
+      "name": "inet6",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "inet6 fe80": {
+      "name": "inet6 fe80",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "gif0": {
+      "name": "gif0",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "stf0": {
+      "name": "stf0",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "en0": {
+      "name": "en0",
+      "mac_address": null,
+      "status": "up",
+      "type": "ethernet",
+      "ip_address": null
+    },
+    "ether a8": {
+      "name": "ether a8",
+      "mac_address": null,
+      "status": "down",
+      "type": "ethernet",
+      "ip_address": "192.168.178.31"
+    },
+    "inet6 2a03": {
+      "name": "inet6 2a03",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "inet6 fd3f": {
+      "name": "inet6 fd3f",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "media": {
+      "name": "media",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "status": {
+      "name": "status",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "en1": {
+      "name": "en1",
+      "mac_address": null,
+      "status": "up",
+      "type": "ethernet",
+      "ip_address": null
+    },
+    "ether 98": {
+      "name": "ether 98",
+      "mac_address": null,
+      "status": "down",
+      "type": "ethernet",
+      "ip_address": null
+    },
+    "awdl0": {
+      "name": "awdl0",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "ether e6": {
+      "name": "ether e6",
+      "mac_address": null,
+      "status": "down",
+      "type": "ethernet",
+      "ip_address": null
+    },
+    "llw0": {
+      "name": "llw0",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "en3": {
+      "name": "en3",
+      "mac_address": null,
+      "status": "up",
+      "type": "ethernet",
+      "ip_address": null
+    },
+    "ether 82": {
+      "name": "ether 82",
+      "mac_address": null,
+      "status": "down",
+      "type": "ethernet",
+      "ip_address": null
+    },
+    "en2": {
+      "name": "en2",
+      "mac_address": null,
+      "status": "up",
+      "type": "ethernet",
+      "ip_address": null
+    },
+    "bridge0": {
+      "name": "bridge0",
+      "mac_address": null,
+      "status": "up",
+      "type": "bridge",
+      "ip_address": null
+    },
+    "Configuration": {
+      "name": "Configuration",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "id 0": {
+      "name": "id 0",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "root id 0": {
+      "name": "root id 0",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "member": {
+      "name": "member",
+      "mac_address": null,
+      "status": "down",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "utun0": {
+      "name": "utun0",
+      "mac_address": null,
+      "status": "up",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "utun1": {
+      "name": "utun1",
+      "mac_address": null,
+      "status": "up",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "utun2": {
+      "name": "utun2",
+      "mac_address": null,
+      "status": "up",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "utun3": {
+      "name": "utun3",
+      "mac_address": null,
+      "status": "up",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "utun4": {
+      "name": "utun4",
+      "mac_address": null,
+      "status": "up",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "utun5": {
+      "name": "utun5",
+      "mac_address": null,
+      "status": "up",
+      "type": "unknown",
+      "ip_address": null
+    },
+    "utun6": {
+      "name": "utun6",
+      "mac_address": null,
+      "status": "up",
+      "type": "unknown",
+      "ip_address": null
+    }
+  },
+  "backup_version": "1.0",
+  "tool_version": "1.0.0",
+  "checksums": {}
+}

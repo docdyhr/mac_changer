@@ -1,0 +1,139 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: debug-statements
+      - id: mixed-line-ending
+      - id: requirements-txt-fixer
+
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        language_version: python3.8
+        args: ["--line-length=88"]
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args: ["--profile", "black", "--filter-files"]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-docstrings]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.950
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+        args: [--strict, --ignore-missing-imports]
+
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.7.4
+    hooks:
+      - id: bandit
+        args: ["-c", ".bandit"]
+        exclude: ^test_.*\.py$
+
+  - repo: https://github.com/pycqa/pylint
+    rev: v2.15.0
+    hooks:
+      - id: pylint
+        args: [--rcfile=pyproject.toml]
+
+  - repo: https://github.com/PyCQA/doc8
+    rev: v1.1.1
+    hooks:
+      - id: doc8
+        args: [--max-line-length=88]
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+      - id: pyupgrade
+        args: [--py38-plus]
+
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        args: [--convention=google]
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.7.1
+    hooks:
+      - id: prettier
+        types_or: [yaml, markdown, json]
+        exclude: ^\.venv/
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.2
+    hooks:
+      - id: shellcheck
+        args: [-e, SC1091]
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: python
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        args: [test_mac_changer.py, --cov=mac_changer, --cov-report=term-missing]
+
+      - id: safety
+        name: safety
+        entry: safety
+        language: python
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        args: [check]
+
+      - id: version-check
+        name: version-check
+        entry: python
+        language: python
+        types: [python]
+        pass_filenames: false
+        always_run: true
+        args: [-c, "import mac_changer; print(f'Version: {mac_changer.__version__}')"]
+
+# Configure pre-commit settings
+default_language_version:
+  python: python3.8
+
+minimum_pre_commit_version: 2.20.0
+
+# Exclude files and directories
+exclude: |
+  (?x)^(
+    archive/.*|
+    \.venv/.*|
+    __pycache__/.*|
+    \.git/.*|
+    \.mypy_cache/.*|
+    \.pytest_cache/.*|
+    build/.*|
+    dist/.*|
+    \.eggs/.*
+  )$
+
+# Fail fast on first error
+fail_fast: true
+
+# Repository settings
+default_stages: [commit]
