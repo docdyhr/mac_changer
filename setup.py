@@ -56,7 +56,7 @@ setup(
         "Topic :: Security",
     ],
     keywords="mac address changer network interface ifconfig security",
-    python_requires=">=3.12",
+    python_requires=">=3.8",
     install_requires=[
         # No external dependencies - uses only Python standard library
     ],
