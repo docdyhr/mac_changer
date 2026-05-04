@@ -7,17 +7,17 @@ including validation, error handling, and system interactions.
 Run with: python3 -m unittest test_improved.py -v
 """
 
-import unittest
 import argparse
-import subprocess
-from unittest.mock import patch, MagicMock, call
-import sys
 import os
+import subprocess
+import sys
+import unittest
+from unittest.mock import call, patch
 
 # Add the current directory to path so we can import our module
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import mac_changer as mci
+import mac_changer as mci  # noqa: E402
 
 
 class TestMACChanger(unittest.TestCase):

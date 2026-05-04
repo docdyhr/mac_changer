@@ -5,8 +5,9 @@ This script allows for easy installation of the MAC changer tool
 as a system-wide command or in a virtual environment.
 """
 
-from setuptools import setup, find_packages
 import os
+
+from setuptools import setup
 
 # Read the contents of README file
 this_directory = os.path.abspath(os.path.dirname(__file__))
@@ -16,9 +17,9 @@ with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 # Read version from the main module
 def get_version():
-    """Extract version from mac_changer.py"""
+    """Extract version from mac_changer.py."""
     version_line = None
-    with open(os.path.join(this_directory, "mac_changer.py"), "r") as f:
+    with open(os.path.join(this_directory, "mac_changer.py")) as f:
         for line in f:
             if line.startswith("version"):
                 version_line = line

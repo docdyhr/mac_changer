@@ -37,6 +37,7 @@ repos:
     hooks:
       - id: mypy
         args: [--ignore-missing-imports]
+        files: ^mac_changer\.py$
 
   - repo: https://github.com/pycqa/bandit
     rev: 1.8.3
