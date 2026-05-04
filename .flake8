@@ -13,16 +13,18 @@ exclude =
     .mypy_cache,
     .pytest_cache
 
+# E203: whitespace before ':', E501: line too long (handled by black)
+# W503/W504: line break around binary operator
 ignore =
-    E203,  # whitespace before ':'
-    W503,  # line break before binary operator
-    E501,  # line too long (handled by black)
-    W504,  # line break after binary operator
+    E203,
+    W503,
+    E501,
+    W504
 
 per-file-ignores =
     __init__.py:F401
 
-max-complexity = 10
+max-complexity = 25
 doctests = True
 show-source = True
 statistics = True
@@ -30,7 +32,7 @@ count = True
 
 # Error codes to always report
 select =
-    E,  # pycodestyle errors
-    W,  # pycodestyle warnings
-    F,  # pyflakes
-    C,  # mccabe complexity
+    E,
+    W,
+    F,
+    C

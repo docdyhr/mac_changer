@@ -22,8 +22,7 @@ import platform
 import re
 import subprocess
 import sys
-from typing import Optional, List
-
+from typing import List, Optional
 
 # Configure logging
 logging.basicConfig(
@@ -72,7 +71,7 @@ class InterfaceError(MACChangerError):
 class MACChanger:
     """Main MAC address changer class."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.supported_platforms = ["linux", "darwin"]  # darwin = macOS
         self.mac_regex = re.compile(r"^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$", re.IGNORECASE)
         self.interface_regex = re.compile(
@@ -293,7 +292,7 @@ def create_argument_parser(mac_changer: MACChanger) -> argparse.ArgumentParser:
     return parser
 
 
-def main():
+def main() -> None:
     """Main function."""
     mac_changer = MACChanger()
 
