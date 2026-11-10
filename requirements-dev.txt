@@ -36,10 +36,10 @@ build>=1.6.1
 twine>=7.0.0
 
 # Coverage reporting
-coverage>=7.17.0
+coverage>=7.17.2
 
 # Development utilities
-ipython>=9.18.0
+ipython>=9.18.1
 pdbpp>=0.12.1
 
 # Code quality
